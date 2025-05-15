@@ -63,7 +63,7 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
 
 ## 1-distributed_web_infrastructure
 
-![Diagramme distributed web infrastructure](./1-distributed_web_infrastructure)
+![Diagramme distributed web infrastructure](./1-distributed_web_infrastructure.png)
 
 ### Infrastructure Component Explanations (Part2)
 
@@ -157,7 +157,7 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
 
 ## 2-secured_and_monitored_web_infrastructure
 
-![Diagramme secured and monitored web infrastructure](./2-secured_and_monitored_web_infrastructure)
+![Diagramme secured and monitored web infrastructure](./2-secured_and_monitored_web_infrastructure.png)
 
 ### Infrastructure Component Explanations (Part3)
 
@@ -353,7 +353,7 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
 
 ## 3-scale_up
 
-![Diagramme scale up](./3-scale_up)
+![Diagramme scale up](./3-scale_up.png)
 
 ### Infrastructure Component Explanations (Part4)
 
