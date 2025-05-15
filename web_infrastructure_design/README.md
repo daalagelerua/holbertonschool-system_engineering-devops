@@ -1,5 +1,7 @@
 ## 0-simple_web_stack
 
+![Diagramme simple web stack](./0-simple_web_stack.png)
+
 ### Infrastructure Component Explanations
 
 - ***What is a server?***
@@ -60,6 +62,8 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
     With all components on a single server, there's a limit to how much traffic the website can handle. If the site experiences a sudden surge in visitors (like during a marketing campaign or viral content), the server may become overwhelmed, leading to slow performance or complete failure. The infrastructure cannot easily scale horizontally (adding more servers) to handle increased load.
 
 ## 1-distributed_web_infrastructure
+
+![Diagramme distributed web infrastructure](./1-distributed_web_infrastructure)
 
 ### Infrastructure Component Explanations (Part2)
 
@@ -152,6 +156,8 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
     - No historical data for capacity planning and problem analysis
 
 ## 2-secured_and_monitored_web_infrastructure
+
+![Diagramme secured and monitored web infrastructure](./2-secured_and_monitored_web_infrastructure)
 
 ### Infrastructure Component Explanations (Part3)
 
@@ -346,6 +352,8 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
     **Solution:** Separate components onto specialized servers (database servers, application servers, web servers) for better resource allocation and scaling
 
 ## 3-scale_up
+
+![Diagramme scale up](./3-scale_up)
 
 ### Infrastructure Component Explanations (Part4)
 
