@@ -357,134 +357,136 @@ The server communicates with the user's computer using the HTTP (Hypertext Trans
 
 ### Infrastructure Component Explanations (Part4)
 
-Second Load Balancer in a Cluster:
+- ***Second Load Balancer in a Cluster:***
 
-Purpose: Creates high availability for the load balancing layer
-Why Add It:
+    **Purpose:** Creates high availability for the load balancing layer
 
-Eliminates the load balancer as a single point of failure
-Allows for maintenance of one load balancer without downtime
-Provides redundancy if one load balancer fails
-Can share load during normal operation
+    **Why Add It:**
 
-
-How It Works:
-
-Both load balancers monitor each other's health
-They share a virtual/floating IP address that clients connect to
-If one fails, the other takes over the floating IP automatically
-Typically configured in active-passive or active-active mode
+    - Eliminates the load balancer as a single point of failure
+    - Allows for maintenance of one load balancer without downtime
+    - Provides redundancy if one load balancer fails
+    - Can share load during normal operation
 
 
+    **How It Works:**
 
-
-Split Components onto Specialized Servers:
-
-Purpose: Separates web, application, and database functions onto dedicated servers
-Why Add It:
-
-Improved Resource Allocation: Each component has dedicated resources without competition
-Independent Scaling: Can scale each tier based on specific needs (e.g., add more web servers for high traffic)
-Improved Security: Creates separation between tiers, limiting potential breach impact
-Specialized Optimization: Can optimize each server for its specific role
-Targeted Maintenance: Can update or restart components without affecting others
-Different Hardware Profiles: Can use different hardware specs for each role (e.g., high CPU for app servers, high memory for databases)
+    - Both load balancers monitor each other's health
+    - They share a virtual/floating IP address that clients connect to
+    - If one fails, the other takes over the floating IP automatically
+    - Typically configured in active-passive or active-active mode
 
 
 
 
+- ***Split Components onto Specialized Servers:***
 
-Specific Benefits of the New Architecture
+    **Purpose:** Separates web, application, and database functions onto dedicated servers
+    
+    **Why Add It:**
 
-Web Server Tier:
-
-Optimized for handling HTTP requests and serving static content
-Can be scaled horizontally by adding more web servers when traffic increases
-Can be configured with caching specific to web content
-Failure of one web server doesn't affect application logic or data
-
-
-Application Server Tier:
-
-Focused on business logic and application processing
-Can be optimized for CPU and memory usage specific to application needs
-Can be scaled based on computational demands rather than web traffic
-Updates to application code don't require restarting web servers
-
-
-Database Server Tier:
-
-Dedicated resources for database operations
-Can be optimized specifically for data storage and retrieval
-Primary-Replica setup provides redundancy and read scaling
-Database maintenance doesn't affect the availability of web or application servers
-
-
-Load Balancer Cluster:
-
-Provides high availability for the entry point to your infrastructure
-Enables seamless failover if one load balancer goes down
-Can be updated or maintained without service interruption
-Typically uses heartbeat protocols to detect failures and coordinate failover
-
-
-
-How the Clustered Load Balancer Works
-
-Floating/Virtual IP (VIP):
-
-A shared IP address that both load balancers can assume
-The DNS entry for www.foobar.com points to this floating IP
-Only one load balancer actively uses this IP at any given time (in active-passive setup)
-
-
-Heartbeat Communication:
-
-Load balancers constantly check each other's health
-They exchange status messages to coordinate which one is active
-If the active LB fails to send heartbeats, the passive one takes over
-
-
-Synchronization:
-
-Configuration is synchronized between both load balancers
-Session data can be shared to maintain persistence during failover
-State information is replicated to ensure seamless transitions
-
-
-Takeover Process:
-
-When a failure is detected, the surviving load balancer:
-
-Claims the floating IP address
-Sends gratuitous ARP messages to update network routing
-Takes over all load balancing functions
-No DNS changes are needed, making failover nearly instantaneous
+    - Improved Resource Allocation: Each component has dedicated resources without competition
+    - Independent Scaling: Can scale each tier based on specific needs (e.g., add more web servers for high traffic)
+    - Improved Security: Creates separation between tiers, limiting potential breach impact
+    - Specialized Optimization: Can optimize each server for its specific role
+    - Targeted Maintenance: Can update or restart components without affecting others
+    - Different Hardware Profiles: Can use different hardware specs for each role (e.g., high CPU for app servers, high memory for databases)
 
 
 
 
 
-How This Architecture Addresses Previous Issues
+- ***Specific Benefits of the New Architecture***
 
-SSL Termination Issue:
+    **Web Server Tier:**
 
-You could implement end-to-end encryption by re-encrypting traffic between load balancers and web servers
-Or implement network-level encryption between all components
-
-
-Single MySQL Write Point Issue:
-
-While still using a Primary-Replica setup, you can implement automatic failover
-The architecture allows for adding more database servers or implementing clustering
+    - Optimized for handling HTTP requests and serving static content
+    - Can be scaled horizontally by adding more web servers when traffic increases
+    - Can be configured with caching specific to web content
+    - Failure of one web server doesn't affect application logic or data
 
 
-Identical Server Components Issue:
+- ***Application Server Tier:***
 
-Completely resolved by separating components onto specialized servers
-Each tier can now be independently scaled, maintained, and optimized
+    - Focused on business logic and application processing
+    - Can be optimized for CPU and memory usage specific to application needs
+    - Can be scaled based on computational demands rather than web traffic
+    - Updates to application code don't require restarting web servers
 
 
-Load Balancer SPOF Issue:
+- ***Database Server Tier:***
 
-Resolved by implementing the load balancer cluster with automatic failover
+    - Dedicated resources for database operations
+    - Can be optimized specifically for data storage and retrieval
+    - Primary-Replica setup provides redundancy and read scaling
+    - Database maintenance doesn't affect the availability of web or application servers
+
+
+- ***Load Balancer Cluster:***
+
+    - Provides high availability for the entry point to your infrastructure
+    - Enables seamless failover if one load balancer goes down
+    - Can be updated or maintained without service interruption
+    - Typically uses heartbeat protocols to detect failures and coordinate failover
+
+
+
+- ***How the Clustered Load Balancer Works***
+
+    **Floating/Virtual IP (VIP):**
+
+    - A shared IP address that both load balancers can assume
+    - The DNS entry for www.foobar.com points to this floating IP
+    - Only one load balancer actively uses this IP at any given time (in active-passive setup)
+
+
+    **Heartbeat Communication:**
+
+    - Load balancers constantly check each other's health
+    - They exchange status messages to coordinate which one is active
+    - If the active LB fails to send heartbeats, the passive one takes over
+
+
+    **Synchronization:**
+
+    - Configuration is synchronized between both load balancers
+    - Session data can be shared to maintain persistence during failover
+    - State information is replicated to ensure seamless transitions
+
+
+    **Takeover Process:**
+
+    When a failure is detected, the surviving load balancer:
+
+    - Claims the floating IP address
+    - Sends gratuitous ARP messages to update network routing
+    - Takes over all load balancing functions
+    - No DNS changes are needed, making failover nearly instantaneous
+
+
+
+
+
+- ***How This Architecture Addresses Previous Issues***
+
+    **SSL Termination Issue:**
+
+    - You could implement end-to-end encryption by re-encrypting traffic between load balancers and web servers
+    - Or implement network-level encryption between all components
+
+
+    **Single MySQL Write Point Issue:**
+
+    - While still using a Primary-Replica setup, you can implement automatic failover
+    - The architecture allows for adding more database servers or implementing clustering
+
+
+    **Identical Server Components Issue:**
+
+    - Completely resolved by separating components onto specialized servers
+    - Each tier can now be independently scaled, maintained, and optimized
+
+
+    **Load Balancer SPOF Issue:**
+
+    - Resolved by implementing the load balancer cluster with automatic failover
